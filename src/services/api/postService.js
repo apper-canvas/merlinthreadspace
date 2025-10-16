@@ -1,8 +1,6 @@
-import postsData from "@/services/mockData/posts.json";
 import { CommunityService } from "@/services/api/communityService";
 
 export class PostService {
-  static posts = [...postsData];
   static comments = [];
   static savedPostIds = new Set();
 
