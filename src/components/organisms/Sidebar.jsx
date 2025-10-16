@@ -1,31 +1,36 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/layouts/Root";
 import React from "react";
 import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 import Communities from "@/components/pages/Communities";
 
-const Sidebar = ({ className, isMobile = false, onItemClick }) => {
+const Sidebar = ({ isMobile, onItemClick, className }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
-const navigationItems = [
+const isActive = (path) => {
+    if (path === "") return location.pathname === "/";
+    return location.pathname.includes(path);
+  };
+
+  const navigationItems = [
     { path: "", label: "Home", icon: "Home" },
     { path: "popular", label: "Popular", icon: "TrendingUp" },
     { path: "saved", label: "Saved", icon: "Bookmark" },
     { path: "communities", label: "Communities", icon: "Users" },
-    { path: "user/techEnthusiast", label: "Profile", icon: "User" }
+    { path: "user/techEnthusiast", label: "Profile", icon: "User" },
+    { path: "logout", label: "Logout", icon: "LogOut" }
   ];
 
   const handleNavigation = (path) => {
-    navigate(`/${path}`);
-    if (onItemClick) onItemClick();
-  };
-
-  const isActive = (path) => {
-    if (path === "") {
-      return location.pathname === "/";
+    if (path === "logout") {
+      logout();
+    } else {
+      navigate(`/${path}`);
     }
-    return location.pathname === `/${path}`;
+    if (onItemClick) onItemClick();
   };
 
   return (
